@@ -1,0 +1,216 @@
+{
+  "dep_weights": [
+    0.0037218271164651973,
+    0.055645980634058345,
+    0.1774554728482863,
+    0.2637469157560804,
+    0.4994298036451098
+  ],
+  "corpora": {
+    "chat": {
+      "description": "human assistant replies (OpenAssistant)",
+      "file": "chat_human.base.jsonl",
+      "words": 288888,
+      "rates": {
+        "inanimate_subject": 0.2353853396471989,
+        "stacked_nouns": 2.2188529810860955,
+        "reduced_orc": 1.474619921907452,
+        "overt_orc": 0.35307800947079837,
+        "denominal_verb": 2.6515466201434466,
+        "unattested_bigram": 120.59695363728522,
+        "dependency_length": 2.195611960584966
+      },
+      "counts": {
+        "words": 288888,
+        "sentences": 17454,
+        "pairs": 233787,
+        "unattested": 28194,
+        "dep_sum": [
+          6024.0,
+          33357.0,
+          85860.0,
+          129331.0,
+          229093.0
+        ],
+        "dep_arcs": [
+          4209,
+          18623,
+          42899,
+          60009,
+          98041
+        ],
+        "hits": {
+          "inanimate_subject": 68,
+          "stacked_nouns": 641,
+          "reduced_orc": 426,
+          "overt_orc": 102,
+          "denominal_verb": 766
+        }
+      }
+    },
+    "qa": {
+      "description": "StackExchange answers",
+      "file": "qa_human.base.jsonl",
+      "words": 305456,
+      "rates": {
+        "inanimate_subject": 0.383033890314808,
+        "stacked_nouns": 1.2538630768424912,
+        "reduced_orc": 1.7940390760044,
+        "overt_orc": 0.5499973809648525,
+        "denominal_verb": 2.9005814258027343,
+        "unattested_bigram": 167.6405006428932,
+        "dependency_length": 2.3069604434336406
+      },
+      "counts": {
+        "words": 305456,
+        "sentences": 16847,
+        "pairs": 245764,
+        "unattested": 41200,
+        "dep_sum": [
+          6334.0,
+          38101.0,
+          78314.0,
+          104593.0,
+          205088.0
+        ],
+        "dep_arcs": [
+          4417,
+          21215,
+          38202,
+          46658,
+          82161
+        ],
+        "hits": {
+          "inanimate_subject": 117,
+          "stacked_nouns": 383,
+          "reduced_orc": 548,
+          "overt_orc": 168,
+          "denominal_verb": 886
+        }
+      }
+    },
+    "wiki": {
+      "description": "English Wikipedia",
+      "file": "wiki.base.jsonl",
+      "words": 304725,
+      "rates": {
+        "inanimate_subject": 0.1542374271884486,
+        "stacked_nouns": 2.0871277381245386,
+        "reduced_orc": 0.41676921814751006,
+        "overt_orc": 0.2658134383460497,
+        "denominal_verb": 2.681105915169415,
+        "unattested_bigram": 240.76517697829786,
+        "dependency_length": 2.2151116064426075
+      },
+      "counts": {
+        "words": 304725,
+        "sentences": 14084,
+        "pairs": 240990,
+        "unattested": 58022,
+        "dep_sum": [
+          971.0,
+          18252.0,
+          67731.0,
+          110203.0,
+          229685.0
+        ],
+        "dep_arcs": [
+          715,
+          10724,
+          34183,
+          50824,
+          96247
+        ],
+        "hits": {
+          "inanimate_subject": 47,
+          "stacked_nouns": 636,
+          "reduced_orc": 127,
+          "overt_orc": 81,
+          "denominal_verb": 817
+        }
+      }
+    },
+    "essay": {
+      "description": "human-written essays (Ghostbuster)",
+      "file": "essay_human.base.jsonl",
+      "words": 97686,
+      "rates": {
+        "inanimate_subject": 0.2968695616567369,
+        "stacked_nouns": 2.1395082202157933,
+        "reduced_orc": 0.6756341748049874,
+        "overt_orc": 0.4299490203304465,
+        "denominal_verb": 2.2930614417623816,
+        "unattested_bigram": 182.0430733410943,
+        "dependency_length": 2.160373128405595
+      },
+      "counts": {
+        "words": 97686,
+        "sentences": 4734,
+        "pairs": 82464,
+        "unattested": 15012,
+        "dep_sum": [
+          208.0,
+          2700.0,
+          22119.0,
+          44820.0,
+          95525.0
+        ],
+        "dep_arcs": [
+          154,
+          1539,
+          11289,
+          21268,
+          41334
+        ],
+        "hits": {
+          "inanimate_subject": 29,
+          "stacked_nouns": 209,
+          "reduced_orc": 66,
+          "overt_orc": 42,
+          "denominal_verb": 224
+        }
+      }
+    },
+    "fiction": {
+      "description": "public-domain fiction (Gutenberg)",
+      "file": "fiction.base.jsonl",
+      "words": 205414,
+      "rates": {
+        "inanimate_subject": 0.6182636042334018,
+        "stacked_nouns": 0.28235660665777407,
+        "reduced_orc": 1.6697985531658017,
+        "overt_orc": 0.6718139951512555,
+        "denominal_verb": 3.8118141898799496,
+        "unattested_bigram": 178.46507974204863,
+        "dependency_length": 2.343811136821845
+      },
+      "counts": {
+        "words": 205414,
+        "sentences": 13413,
+        "pairs": 164217,
+        "unattested": 29307,
+        "dep_sum": [
+          8805.0,
+          42329.0,
+          60301.0,
+          66439.0,
+          116328.0
+        ],
+        "dep_arcs": [
+          6191,
+          23546,
+          28793,
+          29242,
+          45833
+        ],
+        "hits": {
+          "inanimate_subject": 127,
+          "stacked_nouns": 58,
+          "reduced_orc": 343,
+          "overt_orc": 138,
+          "denominal_verb": 783
+        }
+      }
+    }
+  }
+}

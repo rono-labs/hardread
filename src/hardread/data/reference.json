@@ -1,0 +1,15 @@
+{
+  "reference_words": 10569796,
+  "unique_pairs": 1963809,
+  "kept_pairs": 1963809,
+  "min_count": 1,
+  "denominal_lemmas": 1105,
+  "reference_files": [
+    "wiki.ref.jsonl",
+    "chat_human.ref.jsonl",
+    "qa_human.ref.jsonl",
+    "fiction.ref.jsonl",
+    "essay_human.ref.jsonl"
+  ],
+  "model": "en_core_web_sm"
+}
