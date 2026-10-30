@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use hardread, please cite it and the paper whose features it measures."
+title: "hardread"
+type: software
+authors:
+  - family-names: Malla
+    given-names: Rohan
+version: 0.1.0
+license: MIT
+preferred-citation:
+  type: article
+  title: "Why is AI-generated language so hard to understand?"
+  authors:
+    - family-names: Clark
+      given-names: Thomas Hikaru
+    - family-names: Martin
+      given-names: Matias B.
+    - family-names: Mahowald
+      given-names: Kyle
+  year: 2026
+  identifiers:
+    - type: doi
+      value: 10.48550/arXiv.2610.29162
+  url: "https://arxiv.org/abs/2610.29162"

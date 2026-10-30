@@ -15,6 +15,7 @@ from .resources import Resources
 from .text import CODE
 
 DEP_BINS = ((1, 5), (6, 10), (11, 15), (16, 20), (21, 30))
+ANIMATE_WORDS = {"others", "someone", "everyone", "anyone", "somebody", "everybody", "anybody", "folks", "individuals"}
 INANIMATE_PRONOUNS = {"it", "this", "that", "these", "those", "which", "something", "nothing", "everything", "anything"}
 ANIMATE_ENTS = {"PERSON", "NORP", "ORG", "GPE"}
 RELATIVIZERS = {"WDT", "WP", "WP$", "WRB"}
@@ -50,7 +51,7 @@ def _is_inanimate(tok: Token, res: Resources) -> bool:
         return True
     if tok.pos_ == "PRON":
         return tok.lower_ in INANIMATE_PRONOUNS
-    if tok.ent_type_ in ANIMATE_ENTS:
+    if tok.ent_type_ in ANIMATE_ENTS or tok.lower_ in ANIMATE_WORDS:
         return False
     if tok.pos_ == "NOUN":
         return tok.lemma_.lower() not in res.animate_nouns and tok.lower_ not in res.animate_nouns
@@ -82,7 +83,8 @@ def object_relatives(sent: Span, res: Resources):
         children = list(verb.children)
         if any(c.dep_ in ("auxpass", "nsubjpass") for c in children):
             continue
-        rel = [c for c in children if c.tag_ in RELATIVIZERS or (c.lower_ == "that" and c.i < verb.i)]
+        left = [t for t in verb.subtree if t.i < verb.i]
+        rel = [t for t in left if t.tag_ in RELATIVIZERS or (t.lower_ == "that" and t.head == verb)]
         subj = [c for c in children if c.dep_ == "nsubj" and c not in rel]
         if not subj:
             continue
