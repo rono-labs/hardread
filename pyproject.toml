@@ -9,12 +9,12 @@ description = "Measure the features that make AI-generated prose hard to read, a
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 authors = [{ name = "Rohan Malla" }]
 keywords = ["nlp", "readability", "llm", "psycholinguistics", "spacy", "writing"]
 classifiers = [
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.12",
   "Topic :: Text Processing :: Linguistic",
   "Intended Audience :: Science/Research",
