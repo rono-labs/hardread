@@ -3,7 +3,7 @@
   "unique_pairs": 1963809,
   "kept_pairs": 1963809,
   "min_count": 1,
-  "denominal_lemmas": 1105,
+  "denominal_lemmas": 931,
   "reference_files": [
     "wiki.ref.jsonl",
     "chat_human.ref.jsonl",

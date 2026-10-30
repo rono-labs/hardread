@@ -9,8 +9,10 @@ ask
 bark
 beg
 believe
+betray
 bite
 blame
+bleed
 blink
 boast
 bother
@@ -34,6 +36,7 @@ disagree
 dislike
 doubt
 dream
+earn
 eat
 enjoy
 envy
@@ -56,6 +59,7 @@ imagine
 insist
 intend
 interrogate
+invite
 judge
 know
 laugh
@@ -76,6 +80,7 @@ prefer
 pretend
 promise
 protest
+punish
 realize
 recall
 recognize
@@ -86,6 +91,7 @@ relax
 remember
 resent
 respect
+reward
 scream
 shout
 shrug
@@ -98,12 +104,15 @@ snore
 sob
 speak
 stare
+steal
 suspect
 swallow
 swear
 talk
+teach
 tease
 think
+tolerate
 trust
 understand
 vote

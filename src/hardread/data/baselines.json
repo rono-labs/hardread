@@ -12,11 +12,11 @@
       "file": "chat_human.base.jsonl",
       "words": 288888,
       "rates": {
-        "inanimate_subject": 0.2353853396471989,
+        "inanimate_subject": 0.25615463432195174,
         "stacked_nouns": 2.2188529810860955,
         "reduced_orc": 1.474619921907452,
         "overt_orc": 0.35307800947079837,
-        "denominal_verb": 2.6515466201434466,
+        "denominal_verb": 0.7269253136163496,
         "unattested_bigram": 120.59695363728522,
         "dependency_length": 2.195611960584966
       },
@@ -40,11 +40,11 @@
           98041
         ],
         "hits": {
-          "inanimate_subject": 68,
+          "inanimate_subject": 74,
           "stacked_nouns": 641,
           "reduced_orc": 426,
           "overt_orc": 102,
-          "denominal_verb": 766
+          "denominal_verb": 210
         }
       }
     },
@@ -53,11 +53,11 @@
       "file": "qa_human.base.jsonl",
       "words": 305456,
       "rates": {
-        "inanimate_subject": 0.383033890314808,
+        "inanimate_subject": 0.4092242417893248,
         "stacked_nouns": 1.2538630768424912,
         "reduced_orc": 1.7940390760044,
         "overt_orc": 0.5499973809648525,
-        "denominal_verb": 2.9005814258027343,
+        "denominal_verb": 0.9592216227541773,
         "unattested_bigram": 167.6405006428932,
         "dependency_length": 2.3069604434336406
       },
@@ -81,11 +81,11 @@
           82161
         ],
         "hits": {
-          "inanimate_subject": 117,
+          "inanimate_subject": 125,
           "stacked_nouns": 383,
           "reduced_orc": 548,
           "overt_orc": 168,
-          "denominal_verb": 886
+          "denominal_verb": 293
         }
       }
     },
@@ -94,11 +94,11 @@
       "file": "wiki.base.jsonl",
       "words": 304725,
       "rates": {
-        "inanimate_subject": 0.1542374271884486,
+        "inanimate_subject": 0.1968988432192961,
         "stacked_nouns": 2.0871277381245386,
         "reduced_orc": 0.41676921814751006,
         "overt_orc": 0.2658134383460497,
-        "denominal_verb": 2.681105915169415,
+        "denominal_verb": 0.6661744195586184,
         "unattested_bigram": 240.76517697829786,
         "dependency_length": 2.2151116064426075
       },
@@ -122,11 +122,11 @@
           96247
         ],
         "hits": {
-          "inanimate_subject": 47,
+          "inanimate_subject": 60,
           "stacked_nouns": 636,
           "reduced_orc": 127,
           "overt_orc": 81,
-          "denominal_verb": 817
+          "denominal_verb": 203
         }
       }
     },
@@ -135,11 +135,11 @@
       "file": "essay_human.base.jsonl",
       "words": 97686,
       "rates": {
-        "inanimate_subject": 0.2968695616567369,
+        "inanimate_subject": 0.3173433245296153,
         "stacked_nouns": 2.1395082202157933,
         "reduced_orc": 0.6756341748049874,
         "overt_orc": 0.4299490203304465,
-        "denominal_verb": 2.2930614417623816,
+        "denominal_verb": 0.5323178346948385,
         "unattested_bigram": 182.0430733410943,
         "dependency_length": 2.160373128405595
       },
@@ -163,11 +163,11 @@
           41334
         ],
         "hits": {
-          "inanimate_subject": 29,
+          "inanimate_subject": 31,
           "stacked_nouns": 209,
           "reduced_orc": 66,
           "overt_orc": 42,
-          "denominal_verb": 224
+          "denominal_verb": 52
         }
       }
     },
@@ -176,11 +176,11 @@
       "file": "fiction.base.jsonl",
       "words": 205414,
       "rates": {
-        "inanimate_subject": 0.6182636042334018,
+        "inanimate_subject": 0.666945777795087,
         "stacked_nouns": 0.28235660665777407,
         "reduced_orc": 1.6697985531658017,
         "overt_orc": 0.6718139951512555,
-        "denominal_verb": 3.8118141898799496,
+        "denominal_verb": 1.3631008597271852,
         "unattested_bigram": 178.46507974204863,
         "dependency_length": 2.343811136821845
       },
@@ -204,11 +204,11 @@
           45833
         ],
         "hits": {
-          "inanimate_subject": 127,
+          "inanimate_subject": 137,
           "stacked_nouns": 58,
           "reduced_orc": 343,
           "overt_orc": 138,
-          "denominal_verb": 783
+          "denominal_verb": 280
         }
       }
     }

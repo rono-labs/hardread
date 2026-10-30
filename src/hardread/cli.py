@@ -82,6 +82,14 @@ def render_single(console: Console, report: Report, baseline: dict, base_name: s
         _render_examples(console, report, examples)
 
 
+def _example_quality(item) -> tuple:
+    """Prefer complete, mid-length prose sentences, one per source, as display examples."""
+    (source, sentence), _ = item
+    words = len(sentence.split())
+    clean = sentence[:1].isupper() and sentence.rstrip()[-1:] in ".!?" and not any(c in sentence for c in '"=|')
+    return (not clean, not 8 <= words <= 35)
+
+
 def _render_examples(console: Console, report: Report, n: int) -> None:
     for f in FEATURES:
         if not f.difficulty or f.key == "unattested_bigram":
@@ -93,7 +101,14 @@ def _render_examples(console: Console, report: Report, n: int) -> None:
         merged: dict[tuple[str, str], list] = {}
         for flag in flags:
             merged.setdefault((flag.source, flag.sentence), []).extend(flag.spans)
-        for (source, sentence), spans in list(merged.items())[:n]:
+        seen, picked = set(), []
+        for (source, sentence), spans in sorted(merged.items(), key=_example_quality):
+            if source not in seen or len(merged) <= n:
+                seen.add(source)
+                picked.append(((source, sentence), spans))
+            if len(picked) == n:
+                break
+        for (source, sentence), spans in picked:
             line = Text("  ") + highlight(sentence, spans, mark=not console.is_terminal)
             if source:
                 line.append(f"  {source}", style="dim")

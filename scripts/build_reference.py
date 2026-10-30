@@ -67,11 +67,15 @@ def scan_reference(paths: list[str], model: str, jobs: int):
 NOT_DENOMINAL = {"color", "colour", "signal", "film", "interest"}
 
 
-def denominal_lemmas(pos: dict[str, Counter], min_total: int, noun_share: float, min_verb: int) -> list[str]:
+def denominal_lemmas(pos: dict[str, Counter], n_words: int, min_total: int = 30, noun_share: float = 0.8,
+                     min_verb: int = 3, max_verb_per_million: float = 5.0) -> list[str]:
+    """Lemmas used mostly as nouns whose verb use is rare: ad hoc conversions, not "point" or "face"."""
+    max_verb = max_verb_per_million * n_words / 1e6
     out = []
     for lemma, v in pos["VERB"].items():
         n = pos["NOUN"].get(lemma, 0)
-        if lemma.isalpha() and len(lemma) > 2 and lemma not in NOT_DENOMINAL and v >= min_verb and n + v >= min_total and n / (n + v) >= noun_share:
+        if (lemma.isalpha() and len(lemma) > 2 and lemma not in NOT_DENOMINAL and min_verb <= v <= max_verb
+                and n + v >= min_total and n / (n + v) >= noun_share):
             out.append(lemma)
     return sorted(out)
 
@@ -108,9 +112,10 @@ def main() -> None:
         pairs, pos, n_words = scan_reference(args.ref, args.model, args.jobs)
         kept = np.array([h for h, c in pairs.items() if c >= args.min_count], dtype=np.uint32)
         BigramSet(kept).save(out / "bigrams.u32.gz")
-        den = denominal_lemmas(pos, min_total=30, noun_share=0.8, min_verb=3)
+        den = denominal_lemmas(pos, n_words)
         (out / "denominal_verbs.txt").write_text(
-            "# Verb lemmas tagged as nouns at least 80% of the time in the reference corpora.\n" + "\n".join(den) + "\n")
+            "# Lemmas tagged as nouns at least 80% of the time in the reference corpora, with\n"
+            "# fewer than 5 verb uses per million words.\n" + "\n".join(den) + "\n")
         meta = {"reference_words": n_words, "unique_pairs": len(pairs), "kept_pairs": int(len(kept)),
                 "min_count": args.min_count, "denominal_lemmas": len(den),
                 "reference_files": [Path(p).name for p in args.ref], "model": args.model}
