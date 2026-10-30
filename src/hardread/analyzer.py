@@ -33,6 +33,7 @@ FEATURE_BY_KEY = {f.key: f for f in FEATURES}
 
 # Cap per-feature ratios in the index so one rare feature cannot dominate a short text.
 INDEX_CAP = 5.0
+MIN_WORDS = 2000
 
 TEXT_FIELDS = ("text", "response", "output", "completion", "answer", "content")
 
@@ -55,6 +56,13 @@ class Report:
     flags: dict[str, list[Flag]] = field(default_factory=dict)
     documents: int = 0
 
+    def warnings(self) -> list[str]:
+        if self.counts.words == 0:
+            return ["no English words found"]
+        if self.counts.words < MIN_WORDS:
+            return [f"fewer than {MIN_WORDS:,} words: rates are noisy"]
+        return []
+
     def ratios(self, baseline: dict[str, float]) -> dict[str, float | None]:
         out = {}
         for k, v in self.rates.items():
@@ -70,7 +78,7 @@ class Report:
 
     def to_dict(self, baseline: dict[str, float] | None = None, examples: int = 0) -> dict:
         d = {"name": self.name, "documents": self.documents, "words": self.counts.words,
-             "sentences": self.counts.sentences, "rates": self.rates}
+             "sentences": self.counts.sentences, "rates": self.rates, "warnings": self.warnings()}
         if baseline:
             d["baseline"] = {k: baseline.get(k) for k in self.rates}
             d["ratios"] = self.ratios(baseline)
@@ -124,7 +132,8 @@ class Analyzer:
                 source, text = d if isinstance(d, tuple) else (f"{name}#{i}", d)
                 n_docs += 1
                 for para in clean(text).split("\n\n"):
-                    yield para, source
+                    for chunk in _chunks(para):
+                        yield chunk, source
 
         for doc, source in self.nlp.pipe(paragraphs(), as_tuples=True, batch_size=self.batch_size,
                                          n_process=self.n_process):
@@ -138,17 +147,44 @@ class Analyzer:
         return Report(name, counts, rates, dict(flags), n_docs)
 
 
+MAX_CHUNK = 100_000
+
+
+def _chunks(para: str) -> Iterator[str]:
+    """Split very long paragraphs at sentence-like boundaries so spaCy's length limit is never hit."""
+    while len(para) > MAX_CHUNK:
+        cut = max(para.rfind(". ", 0, MAX_CHUNK), para.rfind(" ", 0, MAX_CHUNK))
+        cut = cut + 1 if cut > 0 else MAX_CHUNK
+        yield para[:cut]
+        para = para[cut:].lstrip()
+    if para:
+        yield para
+
+
+class ModelNotInstalled(RuntimeError):
+    pass
+
+
 def load_model(model: str):
     import spacy
 
     try:
         return spacy.load(model)
     except OSError:
-        print(f"hardread: downloading spaCy model {model} (one time)", file=sys.stderr)
+        pass
+    print(f"hardread: downloading spaCy model {model} (one time)", file=sys.stderr)
+    try:
         from spacy.cli import download
 
         download(model)
         return spacy.load(model)
+    except (SystemExit, Exception):
+        raise ModelNotInstalled(
+            f"spaCy model {model!r} is not installed and the automatic download failed.\n"
+            f"Install it with:  python -m spacy download {model}\n"
+            f"or, in a uv environment:  uv pip install {model}@https://github.com/explosion/spacy-models/"
+            f"releases/download/{model}-3.8.0/{model}-3.8.0-py3-none-any.whl"
+        ) from None
 
 
 def iter_texts(path: str | Path, field: str | None = None) -> Iterator[tuple[str, str]]:
@@ -168,12 +204,18 @@ def iter_texts(path: str | Path, field: str | None = None) -> Iterator[tuple[str
                 yield from iter_texts(child, field)
         return
     if p.suffix.lower() == ".jsonl":
-        with p.open(encoding="utf-8") as f:
+        with p.open(encoding="utf-8", errors="replace") as f:
             for i, line in enumerate(f):
-                if line.strip():
-                    yield from _record_texts(json.loads(line), f"{p.name}:{i + 1}", field)
+                if not line.strip():
+                    continue
+                try:
+                    rec = json.loads(line)
+                except json.JSONDecodeError:
+                    print(f"hardread: skipping invalid JSON on {p.name}:{i + 1}", file=sys.stderr)
+                    continue
+                yield from _record_texts(rec, f"{p.name}:{i + 1}", field)
     elif p.suffix.lower() == ".json":
-        data = json.loads(p.read_text(encoding="utf-8"))
+        data = json.loads(p.read_text(encoding="utf-8", errors="replace"))
         for i, rec in enumerate(data if isinstance(data, list) else [data]):
             yield from _record_texts(rec, f"{p.name}[{i}]", field)
     else:

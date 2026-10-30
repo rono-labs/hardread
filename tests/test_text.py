@@ -20,3 +20,13 @@ def test_snake_case_survives():
 
 def test_think_blocks_removed():
     assert clean("<think>plan</think>Answer.") == "Answer."
+
+
+def test_long_paragraphs_are_chunked():
+    from hardread.analyzer import MAX_CHUNK, _chunks
+
+    para = "This is a sentence. " * 20000
+    chunks = list(_chunks(para))
+    assert len(chunks) > 1
+    assert all(len(c) <= MAX_CHUNK for c in chunks)
+    assert sum(len(c.split()) for c in chunks) == len(para.split())

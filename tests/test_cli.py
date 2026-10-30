@@ -51,3 +51,26 @@ def test_iter_texts_reads_chat_jsonl(tmp_path):
 
 def test_missing_path(capsys):
     assert main(["does-not-exist.txt"]) == 2
+
+
+def test_invalid_jsonl_lines_are_skipped(tmp_path, capsys):
+    f = tmp_path / "bad.jsonl"
+    f.write_text('{"text": "Good line here."}\nnot json\n{"text": "Another good line."}\n')
+    assert [t for _, t in iter_texts(f)] == ["Good line here.", "Another good line."]
+
+
+def test_empty_input_fails_ci_gate(tmp_path, capsys):
+    f = tmp_path / "empty.md"
+    f.write_text("```\ncode only\n```\n")
+    assert main([str(f), "--fail-above", "1.5", "--json"]) == 2
+    out = json.loads(capsys.readouterr().out)
+    assert out["warnings"] == ["no English words found"]
+
+
+def test_same_basename_sources_keep_paths(tmp_path, capsys):
+    for d in ("a", "b"):
+        (tmp_path / d).mkdir()
+        (tmp_path / d / "x.md").write_text(TEXT)
+    assert main([str(tmp_path / "a" / "x.md"), str(tmp_path / "b" / "x.md"), "--json", "-e", "0"]) == 0
+    names = [r["name"] for r in json.loads(capsys.readouterr().out)]
+    assert names[0] != names[1]

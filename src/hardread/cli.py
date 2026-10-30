@@ -10,7 +10,7 @@ from rich.table import Table
 from rich.text import Text
 
 from . import __version__
-from .analyzer import FEATURES, Analyzer, Report, iter_texts
+from .analyzer import FEATURES, Analyzer, ModelNotInstalled, Report, iter_texts
 from .text import CODE
 
 DEFAULT_BASELINE = "chat"
@@ -76,8 +76,8 @@ def render_single(console: Console, report: Report, baseline: dict, base_name: s
     if idx is not None:
         console.print(Text.assemble("Difficulty index ", _ratio_text(idx),
                                     (f"  mean ratio to human {base_name} text over 6 features (each capped at 5x); 1.00x = human-like", "dim")))
-    if report.counts.words < 2000:
-        console.print("[dim]Fewer than 2,000 words: rates are noisy.[/]")
+    for w in report.warnings():
+        console.print(f"[yellow]{w}[/]")
     if examples:
         _render_examples(console, report, examples)
 
@@ -137,6 +137,24 @@ def render_compare(console: Console, reports: list[Report], baseline: dict, base
     console.print(table)
 
 
+def _analyze_paths(analyzer: Analyzer, args, console: Console) -> list[Report] | None:
+    names = [os.path.basename(os.path.normpath(p)) for p in args.paths]
+    reports = []
+    for path in args.paths:
+        if path != "-" and not os.path.exists(path):
+            console.print(f"[red]no such file or folder: {path}[/]")
+            return None
+        name = os.path.basename(os.path.normpath(path))
+        name = "stdin" if path == "-" else path if names.count(name) > 1 else name
+        docs = list(iter_texts(path, args.field))
+        if not docs:
+            console.print(f"[red]no text found in {path}[/]")
+            return None
+        reports.append(analyzer.analyze(docs, name=name, keep_flags=bool(args.examples)))
+
+    return reports
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog="hardread",
@@ -180,17 +198,13 @@ def main(argv: list[str] | None = None) -> int:
         return 2
     baseline = corpora[args.baseline]["rates"]
 
-    reports = []
-    for path in args.paths:
-        if path != "-" and not os.path.exists(path):
-            console.print(f"[red]no such file or folder: {path}[/]")
-            return 2
-        name = "stdin" if path == "-" else os.path.basename(os.path.normpath(path))
-        docs = list(iter_texts(path, args.field))
-        if not docs:
-            console.print(f"[red]no text found in {path}[/]")
-            return 2
-        reports.append(analyzer.analyze(docs, name=name, keep_flags=bool(args.examples)))
+    try:
+        reports = _analyze_paths(analyzer, args, console)
+    except ModelNotInstalled as e:
+        console.print(f"[red]{e}[/]")
+        return 2
+    if reports is None:
+        return 2
 
     if args.json:
         out = [r.to_dict(baseline, args.examples) for r in reports]
@@ -201,8 +215,11 @@ def main(argv: list[str] | None = None) -> int:
         render_compare(console, reports, baseline, args.baseline)
 
     if args.fail_above is not None:
-        worst = max((r.index(baseline) or 0) for r in reports)
-        if worst > args.fail_above:
+        indexes = [r.index(baseline) for r in reports]
+        if any(i is None for i in indexes):
+            print("hardread: no text to score", file=sys.stderr)
+            return 2
+        if max(indexes) > args.fail_above:
             return 1
     return 0
 
