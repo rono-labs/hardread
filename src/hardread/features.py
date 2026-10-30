@@ -27,6 +27,8 @@ ADVERBIAL_HEADS = {"way", "reason", "time", "place", "day", "year", "moment", "e
 # Modifier or argument positions where a -ing/-ed "verb" is really a noun or adjective.
 NOMINAL_DEPS = {"amod", "compound", "nsubj", "nsubjpass", "dobj", "pobj", "nmod", "acomp", "attr", "appos"}
 
+CLAUSAL_DEPS = {"nsubj", "nsubjpass", "csubj", "dobj", "aux", "auxpass", "prt"}
+
 COUNT_FEATURES = ("inanimate_subject", "stacked_nouns", "reduced_orc", "overt_orc", "denominal_verb")
 
 
@@ -132,7 +134,10 @@ def object_relatives(sent: Span, res: Resources):
 
 def denominal_verbs(sent: Span, res: Resources):
     for tok in sent:
-        if tok.pos_ == "VERB" and tok.dep_ not in NOMINAL_DEPS and tok.lemma_.lower() in res.denominal:
+        if tok.pos_ != "VERB" or tok.dep_ in NOMINAL_DEPS or tok.lemma_.lower() not in res.denominal:
+            continue
+        # Nouns mis-tagged as verbs rarely get their own subject, object or auxiliary.
+        if any(c.dep_ in CLAUSAL_DEPS for c in tok.children):
             yield [tok]
 
 

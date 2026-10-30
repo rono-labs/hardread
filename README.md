@@ -1,6 +1,6 @@
 # hardread
 
-**Find the sentences that make AI prose hard to read.** hardread counts the constructions that a recent paper links to slower human reading, compares the counts with human writing, and points at the exact sentences. In our benchmark, recent frontier chat models score 1.4x to 1.8x the human assistant-reply baseline, while GPT-3.5, Llama 3.1 70B and 2022 ChatGPT score 0.85x to 1.08x.
+**Find the sentences that make AI prose hard to read.** hardread counts the constructions that a recent paper links to slower human reading, compares the counts with human writing, and points at the exact sentences. In our benchmark, recent frontier chat models score 1.4x to 1.8x the human assistant-reply baseline, while GPT-3.5, Llama 3.1 70B and 2022 ChatGPT score 0.87x to 1.10x.
 
 ![hardread output on 250 Claude Opus 4.6 replies](docs/hero.png)
 
@@ -43,9 +43,9 @@ Six features that psycholinguistics ties to slower reading, from Clark, Martin a
 | Object relatives without "that" | the papercut people feel |
 | Denominal verbs | **cushions** price spikes, **pooling** judgments |
 
-Each is reported per 1k words next to a bundled human baseline (`chat`, `qa`, `wiki`, `essay`, `fiction`). The difficulty index is the mean ratio, where 1.00x is human-like. Pick the baseline closest to your genre: human fiction scores 1.38x against `chat`.
+Each is reported per 1k words next to a bundled human baseline (`chat`, `qa`, `wiki`, `essay`, `fiction`). The difficulty index is the mean ratio, where 1.00x is human-like. Pick the baseline closest to your genre: human fiction scores 1.42x against `chat`.
 
-Flags are prompts to reread, not verdicts. A hand audit of the first rule set found 50% precision for inanimate subjects and 65-85% for the other features, and the rules were tightened after it. Unattested pairs penalize vocabulary the reference lacks, so heavy technical jargon scores high for that reason alone. Rules, audit and limits: [docs/method.md](docs/method.md).
+Flags are prompts to reread, not verdicts. In a hand audit, precision ranged from 57% (inanimate subjects) to 88% (object relatives without "that"). Unattested pairs penalize vocabulary the reference lacks, so heavy technical jargon scores high for that reason alone. Rules, audit and limits: [docs/method.md](docs/method.md).
 
 ## Benchmark
 

@@ -36,9 +36,18 @@ The index is the mean of the six difficulty-feature ratios to the chosen baselin
 
 ## Accuracy and limits
 
-- A hand-judged sample of 40 flags per feature on model and human chat text gave these precisions for the first rule set: inanimate subjects 50%, stacked nouns 65%, reduced object relatives 85%, overt object relatives 68%, denominal verbs 70%. The current rules fix the most common false-positive patterns found in that audit. Treat single flags as prompts to reread, not verdicts.
+- Precision was hand-judged twice on random flags from model and human chat text (40 per feature unless noted):
+
+  | feature | first rules | after fixes |
+  |---|---|---|
+  | Inanimate subject + animate verb | 50% | 57.5% |
+  | Stacked nouns | 65% | 75% |
+  | Object relatives, no "that" | 85% | 87.5% |
+  | Object relatives with "that" | 68% | 73% (n=11) |
+  | Denominal verbs | 70% | 57.5% |
+
+  After the second audit the denominal rule was tightened again: the verb must have its own subject, object or auxiliary, which removes most nouns the tagger mislabels as verbs. The remaining errors are mostly parser errors from the small spaCy model: person nouns WordNet misses, adjectives tagged as nouns, stranded prepositions. Treat single flags as prompts to reread, not verdicts. `--model` takes any installed spaCy English pipeline, but the bundled baselines were computed with `en_core_web_sm`, so ratios are only like-for-like with that model.
 - Unattested pairs are measured against one mixed reference (10.6M words), while the paper builds a reference per setting (chat, code, essays). Text heavy in domain jargon or code identifiers scores high on this feature because the reference lacks the vocabulary, not because of style. Held-out Wikipedia scores 2.0x against the `chat` baseline for this reason.
-- Precision after the rule fixes has not been re-measured yet.
 - Rates under about 2,000 words are noisy. The CLI warns when that happens.
 - Comparisons across sources with different prompts mix up style with topic. For a clean comparison, run the same prompts through each model.
 - English only.

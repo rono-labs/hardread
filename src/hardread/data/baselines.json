@@ -16,7 +16,7 @@
         "stacked_nouns": 2.2188529810860955,
         "reduced_orc": 1.474619921907452,
         "overt_orc": 0.35307800947079837,
-        "denominal_verb": 0.7269253136163496,
+        "denominal_verb": 0.5226939159812799,
         "unattested_bigram": 120.59695363728522,
         "dependency_length": 2.195611960584966
       },
@@ -44,7 +44,7 @@
           "stacked_nouns": 641,
           "reduced_orc": 426,
           "overt_orc": 102,
-          "denominal_verb": 210
+          "denominal_verb": 151
         }
       }
     },
@@ -57,7 +57,7 @@
         "stacked_nouns": 1.2538630768424912,
         "reduced_orc": 1.7940390760044,
         "overt_orc": 0.5499973809648525,
-        "denominal_verb": 0.9592216227541773,
+        "denominal_verb": 0.766067780629616,
         "unattested_bigram": 167.6405006428932,
         "dependency_length": 2.3069604434336406
       },
@@ -85,7 +85,7 @@
           "stacked_nouns": 383,
           "reduced_orc": 548,
           "overt_orc": 168,
-          "denominal_verb": 293
+          "denominal_verb": 234
         }
       }
     },
@@ -98,7 +98,7 @@
         "stacked_nouns": 2.0871277381245386,
         "reduced_orc": 0.41676921814751006,
         "overt_orc": 0.2658134383460497,
-        "denominal_verb": 0.6661744195586184,
+        "denominal_verb": 0.5119369923701699,
         "unattested_bigram": 240.76517697829786,
         "dependency_length": 2.2151116064426075
       },
@@ -126,7 +126,7 @@
           "stacked_nouns": 636,
           "reduced_orc": 127,
           "overt_orc": 81,
-          "denominal_verb": 203
+          "denominal_verb": 156
         }
       }
     },
@@ -139,7 +139,7 @@
         "stacked_nouns": 2.1395082202157933,
         "reduced_orc": 0.6756341748049874,
         "overt_orc": 0.4299490203304465,
-        "denominal_verb": 0.5323178346948385,
+        "denominal_verb": 0.4401859017668857,
         "unattested_bigram": 182.0430733410943,
         "dependency_length": 2.160373128405595
       },
@@ -167,7 +167,7 @@
           "stacked_nouns": 209,
           "reduced_orc": 66,
           "overt_orc": 42,
-          "denominal_verb": 52
+          "denominal_verb": 43
         }
       }
     },
@@ -180,7 +180,7 @@
         "stacked_nouns": 0.28235660665777407,
         "reduced_orc": 1.6697985531658017,
         "overt_orc": 0.6718139951512555,
-        "denominal_verb": 1.3631008597271852,
+        "denominal_verb": 1.1050853398502536,
         "unattested_bigram": 178.46507974204863,
         "dependency_length": 2.343811136821845
       },
@@ -208,7 +208,7 @@
           "stacked_nouns": 58,
           "reduced_orc": 343,
           "overt_orc": 138,
-          "denominal_verb": 280
+          "denominal_verb": 227
         }
       }
     }
