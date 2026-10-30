@@ -31,6 +31,9 @@ FEATURES = (
 )
 FEATURE_BY_KEY = {f.key: f for f in FEATURES}
 
+# Cap per-feature ratios in the index so one rare feature cannot dominate a short text.
+INDEX_CAP = 5.0
+
 TEXT_FIELDS = ("text", "response", "output", "completion", "answer", "content")
 
 
@@ -62,7 +65,7 @@ class Report:
     def index(self, baseline: dict[str, float]) -> float | None:
         """Mean ratio to the human baseline over the difficulty features (1.0 = human-like)."""
         r = self.ratios(baseline)
-        vals = [r[f.key] for f in FEATURES if f.difficulty and r.get(f.key) is not None]
+        vals = [min(r[f.key], INDEX_CAP) for f in FEATURES if f.difficulty and r.get(f.key) is not None]
         return sum(vals) / len(vals) if vals else None
 
     def to_dict(self, baseline: dict[str, float] | None = None, examples: int = 0) -> dict:

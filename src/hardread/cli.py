@@ -38,9 +38,13 @@ def _bar(r: float | None, width: int = 12) -> Text:
     return t
 
 
-def highlight(flag) -> Text:
-    t = Text(flag.sentence)
-    for s, e in flag.spans:
+def highlight(sentence: str, spans: list[tuple[int, int]], mark: bool = False) -> Text:
+    if mark:
+        for s, e in sorted(set(spans), reverse=True):
+            sentence = sentence[:s] + "[" + sentence[s:e] + "]" + sentence[e:]
+        spans = []
+    t = Text(sentence)
+    for s, e in spans:
         t.stylize("bold reverse", s, e)
     plain = t.plain
     i = plain.find(CODE)
@@ -54,7 +58,7 @@ def highlight(flag) -> Text:
 def render_single(console: Console, report: Report, baseline: dict, base_name: str, examples: int) -> None:
     console.print(
         f"[bold]hardread[/] {report.name}  "
-        f"[dim]{report.documents:,} docs, {report.counts.sentences:,} sentences, {report.counts.words:,} words[/]"
+        f"[dim]{report.documents:,} doc{'s' if report.documents != 1 else ''}, {report.counts.sentences:,} sentences, {report.counts.words:,} words[/]"
     )
     table = Table(box=None, pad_edge=False, header_style="bold")
     table.add_column("feature")
@@ -71,7 +75,7 @@ def render_single(console: Console, report: Report, baseline: dict, base_name: s
     idx = report.index(baseline)
     if idx is not None:
         console.print(Text.assemble("Difficulty index ", _ratio_text(idx),
-                                    (f"  mean ratio to human {base_name} text over 6 features, 1.00x = human-like", "dim")))
+                                    (f"  mean ratio to human {base_name} text over 6 features (each capped at 5x); 1.00x = human-like", "dim")))
     if report.counts.words < 2000:
         console.print("[dim]Fewer than 2,000 words: rates are noisy.[/]")
     if examples:
@@ -86,10 +90,13 @@ def _render_examples(console: Console, report: Report, n: int) -> None:
         if not flags:
             continue
         console.print(f"\n[bold]{f.label}[/] [dim]({report.counts.hits.get(f.key, 0)} found)[/]")
-        for flag in flags[:n]:
-            line = Text("  ") + highlight(flag)
-            if flag.source:
-                line.append(f"  {flag.source}", style="dim")
+        merged: dict[tuple[str, str], list] = {}
+        for flag in flags:
+            merged.setdefault((flag.source, flag.sentence), []).extend(flag.spans)
+        for (source, sentence), spans in list(merged.items())[:n]:
+            line = Text("  ") + highlight(sentence, spans, mark=not console.is_terminal)
+            if source:
+                line.append(f"  {source}", style="dim")
             console.print(line)
 
 

@@ -63,11 +63,15 @@ def scan_reference(paths: list[str], model: str, jobs: int):
     return pairs, pos, n_words
 
 
+# Noun-dominant lemmas whose verb uses are mostly tagger errors on -ing nouns.
+NOT_DENOMINAL = {"color", "colour", "signal", "film", "interest"}
+
+
 def denominal_lemmas(pos: dict[str, Counter], min_total: int, noun_share: float, min_verb: int) -> list[str]:
     out = []
     for lemma, v in pos["VERB"].items():
         n = pos["NOUN"].get(lemma, 0)
-        if lemma.isalpha() and v >= min_verb and n + v >= min_total and n / (n + v) >= noun_share:
+        if lemma.isalpha() and len(lemma) > 2 and lemma not in NOT_DENOMINAL and v >= min_verb and n + v >= min_total and n / (n + v) >= noun_share:
             out.append(lemma)
     return sorted(out)
 

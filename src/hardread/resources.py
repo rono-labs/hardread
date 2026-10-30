@@ -18,7 +18,8 @@ class BigramSet:
         self.hashes = np.unique(hashes.astype(np.uint32))
 
     def __contains__(self, h: int) -> bool:
-        i = np.searchsorted(self.hashes, h)
+        h = np.uint32(h)
+        i = self.hashes.searchsorted(h)
         return bool(i < len(self.hashes) and self.hashes[i] == h)
 
     def __len__(self) -> int:
