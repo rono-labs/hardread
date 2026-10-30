@@ -1,0 +1,36 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "hardread"
+version = "0.1.0"
+description = "Measure the features that make AI-generated prose hard to read, against a human baseline."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.9"
+authors = [{ name = "Rohan Malla" }]
+keywords = ["nlp", "readability", "llm", "psycholinguistics", "spacy", "writing"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Topic :: Text Processing :: Linguistic",
+  "Intended Audience :: Science/Research",
+  "Environment :: Console",
+]
+dependencies = ["spacy>=3.7,<4", "numpy", "rich>=13"]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[project.scripts]
+hardread = "hardread.cli:main"
+
+[project.urls]
+Paper = "https://arxiv.org/abs/2610.29162"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/hardread"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
